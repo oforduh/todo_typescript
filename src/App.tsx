@@ -6,6 +6,9 @@ import { TodoInterface } from './interface/TodoInterface'
 
 
 const App:React.FC = () => {
+  const handleAddTodo=(e)=>{
+e.preventDefault()
+  }
   const [todo,setTodo]=useState<string>("")
   const [todos,setTodos]=useState<TodoInterface[]>([])
   return (
@@ -13,7 +16,7 @@ const App:React.FC = () => {
       <span className={styles.heading}>
         TASKIFY
       </span>
-      <InputField todo={todo} setTodo={setTodo}/>
+      <InputField todo={todo} setTodo={setTodo} handleAddTodo={handleAddTodo}/>
     </div>
   )
 }
