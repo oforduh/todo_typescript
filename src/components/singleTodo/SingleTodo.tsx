@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TodoInterface } from '../../interface/TodoInterface'
 import styles from "./singletodo.module.scss"
 import {AiFillDelete, AiFillEdit} from "react-icons/ai"
@@ -12,7 +12,10 @@ type SingleTodoProps={
     setTodos:React.Dispatch<React.SetStateAction<TodoInterface[]>>
 
 }
+
+
 const SingleTodo:React.FC<SingleTodoProps> = ({item,todos,setTodos}:SingleTodoProps) => {
+
 
     // This functionality toggles between completed and not completed
     const handleDone=(id:number)=>{
@@ -39,17 +42,31 @@ const SingleTodo:React.FC<SingleTodoProps> = ({item,todos,setTodos}:SingleTodoPr
    const handleEdit=(id:number)=>{
 
     // swicthes the edit mode to true only if the edit mode is false and the task has not been completed
-   if(!edit && !item.isDone){
-    setEdit(!edit)
-   }
+
+    setTodos(todos.map((todo)=>{
+        return todo.id===id?{...todo,todo:editTodoValue}:todo
+    }))
+    setEdit(false)
     }
 
+    // ensure the input field is on focus when a user tries to edit
+    const inputRef=useRef<HTMLInputElement>(null)
+    useEffect(() => {
+      inputRef.current?.focus()
+    }, [edit])
+
   return (
-    <form key={item.id} className={styles.single_todo_form}>
+    <form key={item.id} className={styles.single_todo_form} onSubmit={(e)=>{
+        e.preventDefault()
+        handleEdit(item.id)
+    }}>
 
         {edit?<input value={editTodoValue} onChange={(e)=>{
             setEditTodoValue(e.target.value)
-        }} className={styles.todo_single_edit_input}/>:
+        }} className={styles.todo_single_edit_input}
+        ref={inputRef}
+        
+        />:
         item.isDone? <s className={styles.single_todo_text}>{item.todo}</s>: <span className={styles.single_todo_text}>{item.todo}</span>
         }
 
@@ -57,7 +74,9 @@ const SingleTodo:React.FC<SingleTodoProps> = ({item,todos,setTodos}:SingleTodoPr
    
     <div className={styles.iconGroup}>      
     <span className={styles.icon} onClick={()=>{
-        handleEdit(item.id)
+          if(!edit && !item.isDone){
+            setEdit(!edit)
+           }
     }}>
     <AiFillEdit/>
     </span>

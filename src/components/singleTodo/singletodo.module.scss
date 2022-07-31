@@ -15,6 +15,16 @@
       outline: none;
     }
   }
+
+  .todo_single_edit_input {
+    // border: 3px solid red;
+    outline: none;
+    flex-grow: 1;
+    border: none;
+    font-size: 20px;
+    padding: 5px;
+  }
+
   .iconGroup {
     .icon {
       margin-left: 10px;
