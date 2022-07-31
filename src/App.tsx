@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import styles from "./app.module.scss"
+import InputField from './components/inputField/InputField'
+import { TodoInterface } from './interface/TodoInterface'
 
-function App() {
+
+
+const App:React.FC = () => {
+  const [todo,setTodo]=useState<string>("")
+  const [todos,setTodos]=useState<TodoInterface[]>([])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.appContainer}>
+      <span className={styles.heading}>
+        TASKIFY
+      </span>
+      <InputField todo={todo} setTodo={setTodo}/>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
