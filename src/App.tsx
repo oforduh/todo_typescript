@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./app.module.scss"
 import InputField from './components/inputField/InputField'
 import TodoList from './components/todoList/TodoList'
@@ -10,6 +10,30 @@ import { TodoInterface } from './interface/TodoInterface'
 const App:React.FC = () => {
   const [todo,setTodo]=useState<string>("")
   const [todos,setTodos]=useState<TodoInterface[]>([])
+  const [todoWatch,setTodoWatch]=useState<boolean>(false)
+
+
+//get the array from local storage
+useEffect(() => { 
+  const json = localStorage.getItem("todos");
+  if (!json) return
+  console.log(json);
+  const jsonTodoList = JSON.parse(json);
+  console.log(jsonTodoList);
+  setTodos(jsonTodoList);
+  setTodoWatch(false)
+}, [todoWatch]);
+
+
+// This functionality will run anytime there are changes in the TodoList state and it saves the array to local storage
+useEffect(() => {
+  const jsonTodoList = JSON.stringify(todos);
+  if (todos.length < 1) return
+  localStorage.setItem("todos", jsonTodoList);
+  setTodoWatch(true)
+  
+}, [todos]);
+
 
     // a function that adds new todo
     const handleAddTodo=(e: React.FormEvent)=>{
@@ -21,8 +45,6 @@ const App:React.FC = () => {
           setTodo("")
       }
       }
-
-      console.log(todos)
   return (
     <div className={styles.appContainer}>
       <span className={styles.heading}>
