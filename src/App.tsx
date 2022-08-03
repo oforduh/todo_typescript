@@ -48,7 +48,7 @@ useEffect(() => {
   return (
     <div className={styles.appContainer}>
       <span className={styles.heading}>
-        TASKIFY
+        TYPESCRIPT REACT TASKIFY
       </span>
       <InputField todo={todo} setTodo={setTodo} handleAddTodo={handleAddTodo}/>
       <TodoList todos={todos} setTodos={setTodos} />
